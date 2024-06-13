@@ -41,7 +41,7 @@ module.exports = {
 	formatMessage(dom) {
 		const blankErrorMessage = '-------------- Erreur --------------\n';
 		let errorMessage = blankErrorMessage;
-		let message = '>>> ';
+		let message = '';
 
 		let planningTable;
 
@@ -61,7 +61,7 @@ module.exports = {
 			switch (spanType) {
 			case 'lblDay':
 				// Jour
-				if (message.length !== '>>> ') { message += '\n'; }
+				if (message.length !== '') { message += '\n'; }
 				message += `## **__${textContent.toUpperCase()}__**`;
 				break;
 			case 'lblEvtRange':
