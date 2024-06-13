@@ -1,6 +1,5 @@
 {
     "token": "YOUR_BOT_TOKEN",
     "clientId": "YOUR_BOT_APPLICATION_ID",
-	"guildId": "YOUR_SERVER_ID",
-    "homeworkChannelId" : "ID_OF_YOUR_HOMEWORK_FORUM_CHANNEL"
+	"guildId": "YOUR_SERVER_ID"
 }

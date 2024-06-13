@@ -5,6 +5,5 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Replies with Pong!'),
 	async execute(interaction) {
-		await interaction.reply('Ping yourself, dumbass.');
-	},
+		await interaction.reply("Jordan s'est chié dessus dans l'amphi N de Tolbiac, la merde a coulé sur ses chaussures. (pong)");	},
 };
