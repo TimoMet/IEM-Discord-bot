@@ -1,6 +1,6 @@
 # IEM Discord bot
 
-A nice and polite bot made for the Discord's server of the IEM P8.
+A nice and polite bot made for the Discord's server of the IEM P8 reworked by goat among the IEM P9.
 
 ## How to setup
 
