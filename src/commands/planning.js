@@ -62,7 +62,7 @@ module.exports = {
 			case 'lblDay':
 				// Jour
 				if (message.length != 0) { message += '\n'; }
-				message += `\n\n**__${textContent.toUpperCase()}__**`;
+				message += `\n**__${textContent.toUpperCase()}__**`;
 				break;
 			case 'lblEvtRange':
 				// Heure
