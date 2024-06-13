@@ -61,7 +61,7 @@ module.exports = {
 			switch (spanType) {
 			case 'lblDay':
 				// Jour
-				if (message.length != 0) { message += '\n\n'; }
+				if (message.length !== '>>> ') { message += '\n\n'; }
 				message += `**__${textContent.toUpperCase()}__**`;
 				break;
 			case 'lblEvtRange':
