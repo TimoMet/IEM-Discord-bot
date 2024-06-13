@@ -91,10 +91,10 @@ module.exports = {
 			}
 		});
 
-		if (errorMessage == blankErrorMessage) {
-			return message;
-		} else {
-			return message + '\n\n\n' + errorMessage;
+		if (errorMessage !== blankErrorMessage) {
+			log(errorMessage);
 		}
+
+		return message;
 	},
 };
