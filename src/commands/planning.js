@@ -31,6 +31,7 @@ module.exports = {
 	},
 
 	async sendPlanning(interaction, weekOffset) {
+
 		if (weekOffset > 10) {
 			await interaction.editReply('You can only see the planning for the next 10 weeks');
 			return;
@@ -41,6 +42,15 @@ module.exports = {
 			return;
 		}
 
+		let message = '';
+		if (weekOffset === 0) {
+			message += '# **PLANNING DE LA SEMAINE ACTUELLE :**\n';
+		} else if (weekOffset === 1) {
+			message += '# **PLANNING DE LA SEMAINE PROCHAINE :**\n';
+		} else {
+			message += `# **PLANNING DE LA SEMAINE DANS ${weekOffset} SEMAINES :**\n`;
+		}
+
 		fetch(process.env.CALENDAR_URL)
 			.then(function(response) {
 				return response.text();
@@ -48,10 +58,11 @@ module.exports = {
 			.then(function(html) {
 				const dom = new JSDOM(html);
 				if (weekOffset === 0) {
-					const message = module.exports.formatMessage(dom);
+					message += module.exports.formatMessage(dom);
 					interaction.editReply(message);
 				} else {
-					module.exports.clickNext(dom, weekOffset).then((message) => {
+					module.exports.clickNext(dom, weekOffset).then((formattedMessage) => {
+						message += formattedMessage;
 						interaction.editReply(message);
 					});
 				}
