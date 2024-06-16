@@ -48,11 +48,12 @@ module.exports = {
 			.then(function(html) {
 				const dom = new JSDOM(html);
 				if (weekOffset === 0) {
-					const message = module.exports.clickNext(dom, weekOffset);
+					const message = module.exports.formatMessage(dom);
 					interaction.editReply(message);
 				} else {
-					const message = module.exports.clickNext(dom, weekOffset);
-					interaction.editReply(message);
+					module.exports.clickNext(dom, weekOffset).then((message) => {
+						interaction.editReply(message);
+					});
 				}
 			})
 			.catch(function(error) {
@@ -76,9 +77,8 @@ module.exports = {
 		formData.append('__EVENTARGUMENT', '');
 		formData.append('__VIEWSTATE', dom.window.document.querySelector('input[name="__VIEWSTATE"]')?.value);
 		formData.append('__VIEWSTATEGENERATOR', dom.window.document.querySelector('input[name="__VIEWSTATEGENERATOR"]')?.value);
-		formData.append('__EVENTVALIDATION', dom.window.document.querySelector('input[name="__EVENTVALIDATION"]')?.value);
-
-		// Add other necessary form fields here
+		formData.append('ctl00$MainContent$btnNavNext.x', 1); // Arbitrary x coordinate value
+		formData.append('ctl00$MainContent$btnNavNext.y', 1); // Arbitrary y coordinate value
 
 		try {
 			const response = await fetch(process.env.CALENDAR_URL, {
@@ -118,6 +118,10 @@ module.exports = {
 			return error;
 		}
 
+		if (planningTable === undefined) {
+			return 'Le planning n\'a pas été trouvé ... il y a pas cours ... je suppose ?';
+		}
+
 		const spans = planningTable.querySelectorAll('span, a');
 
 		spans.forEach(span => {
@@ -128,7 +132,9 @@ module.exports = {
 			switch (spanType) {
 			case 'lblDay':
 				// Jour
-				if (message.length !== '') { message += '\n'; }
+				if (message.length !== '') {
+					message += '\n';
+				}
 				message += `## **__${textContent.toUpperCase()}__**`;
 				break;
 			case 'lblEvtRange':
