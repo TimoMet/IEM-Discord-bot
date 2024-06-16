@@ -20,7 +20,7 @@ module.exports = {
 			.setName('week')
 			.setDescription('number of week more than the actual (0 being actual)')
 			.setMinValue(0)
-			.setMaxValue(10)
+			.setMaxValue(5)
 			.setRequired(false),
 		),
 
