@@ -62,6 +62,49 @@ module.exports = {
 	},
 
 
+	/**
+	 * write
+	 * @param dom
+	 * @param remainingClicks
+	 * @returns {Promise<object|Error|string|*|string|string>}
+	 */
+	async clickNext(dom, remainingClicks) {
+		remainingClicks--;
+
+		const formData = new URLSearchParams();
+		formData.append('__EVENTTARGET', 'ctl00$MainContent$btnNavNext');
+		formData.append('__EVENTARGUMENT', '');
+		formData.append('__VIEWSTATE', dom.window.document.querySelector('input[name="__VIEWSTATE"]').value);
+		formData.append('__VIEWSTATEGENERATOR', dom.window.document.querySelector('input[name="__VIEWSTATEGENERATOR"]').value);
+		formData.append('__EVENTVALIDATION', dom.window.document.querySelector('input[name="__EVENTVALIDATION"]').value);
+
+		// Add other necessary form fields here
+
+		try {
+			const response = await fetch(process.env.CALENDAR_URL, {
+				method: 'POST',
+				body: formData,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				credentials: 'same-origin',
+			});
+			const html = await response.text();
+			const newDom = new JSDOM(html);
+
+
+			if (remainingClicks > 0) {
+				return await module.exports.clickNext(newDom, remainingClicks);
+			}
+
+			return await module.exports.formatMessage(newDom);
+
+		} catch (error) {
+			log(`${error}`);
+			return error.stack;
+		}
+	},
+
 	formatMessage(dom) {
 		const blankErrorMessage = '-------------- Erreur --------------\n';
 		let errorMessage = blankErrorMessage;
