@@ -74,9 +74,9 @@ module.exports = {
 		const formData = new URLSearchParams();
 		formData.append('__EVENTTARGET', 'ctl00$MainContent$btnNavNext');
 		formData.append('__EVENTARGUMENT', '');
-		formData.append('__VIEWSTATE', dom.window.document.querySelector('input[name="__VIEWSTATE"]').value);
-		formData.append('__VIEWSTATEGENERATOR', dom.window.document.querySelector('input[name="__VIEWSTATEGENERATOR"]').value);
-		formData.append('__EVENTVALIDATION', dom.window.document.querySelector('input[name="__EVENTVALIDATION"]').value);
+		formData.append('__VIEWSTATE', dom.window.document.querySelector('input[name="__VIEWSTATE"]')?.value);
+		formData.append('__VIEWSTATEGENERATOR', dom.window.document.querySelector('input[name="__VIEWSTATEGENERATOR"]')?.value);
+		formData.append('__EVENTVALIDATION', dom.window.document.querySelector('input[name="__EVENTVALIDATION"]')?.value);
 
 		// Add other necessary form fields here
 
