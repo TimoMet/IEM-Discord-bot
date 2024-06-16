@@ -118,7 +118,7 @@ module.exports = {
 			return error;
 		}
 
-		if (planningTable === undefined) {
+		if (planningTable === undefined || planningTable === null) {
 			return 'Le planning n\'a pas été trouvé ... il y a pas cours ... je suppose ?';
 		}
 
