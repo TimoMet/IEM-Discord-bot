@@ -1,5 +1,5 @@
 // Import libraries
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, SlashCommandIntegerOption } = require('discord.js');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
@@ -14,22 +14,46 @@ require('dotenv').config();
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('planning')
-		.setDescription('Get the planning for the current week'),
+		.setDescription('Get the planning for the current week')
+		// not a mandatory
+		.addIntegerOption(new SlashCommandIntegerOption()
+			.setName('week')
+			.setDescription('number of week more than the actual (0 being actual)')
+			.setMinValue(0)
+			.setMaxValue(10)
+			.setRequired(false),
+		),
 
 	async execute(interaction) {
 		await interaction.deferReply();
-		module.exports.sendPlanning(interaction);
+		const weekOffset = interaction.options.getInteger('week') || 0;
+		module.exports.sendPlanning(interaction, weekOffset);
 	},
 
-	async sendPlanning(interaction) {
+	async sendPlanning(interaction, weekOffset) {
+		if (weekOffset > 10) {
+			await interaction.editReply('You can only see the planning for the next 10 weeks');
+			return;
+		}
+
+		if (weekOffset < 0) {
+			await interaction.editReply('You cannot see the planning for the past weeks (yet?)');
+			return;
+		}
+
 		fetch(process.env.CALENDAR_URL)
 			.then(function(response) {
 				return response.text();
 			})
 			.then(function(html) {
 				const dom = new JSDOM(html);
-				const message = module.exports.formatMessage(dom);
-				interaction.editReply(message);
+				if (weekOffset === 0) {
+					const message = module.exports.clickNext(dom, weekOffset);
+					interaction.editReply(message);
+				} else {
+					const message = module.exports.clickNext(dom, weekOffset);
+					interaction.editReply(message);
+				}
 			})
 			.catch(function(error) {
 				log(`${error}`);
